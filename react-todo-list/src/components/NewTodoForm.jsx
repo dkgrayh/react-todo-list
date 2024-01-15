@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 export default function NewTodoForm({ onSubmit }) {
-  const [newItem, setNewItem] = useState();
+  const [newItem, setNewItem] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
