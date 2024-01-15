@@ -14,7 +14,25 @@ function App() {
         { id: crypto.randomUUID(), title: newItem, completed: false },
       ];
     });
+    setNewItem('');
   };
+
+  function toggleTodo(id, completed) {
+    setTodos((currentTodos) => {
+      return currentTodos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, completed };
+        }
+        return todo;
+      });
+    });
+  }
+
+  function deleteTodo(id) {
+    setTodos((currentTodos) => {
+      return currentTodos.filter((todo) => todo.id !== id);
+    });
+  }
 
   return (
     <>
@@ -23,7 +41,7 @@ function App() {
         className="new-item-form"
       >
         <div className="form-row">
-          <label htmlFor="">New Item</label>
+          <label htmlFor="item">New Item</label>
           <input
             value={newItem}
             onChange={(event) => setNewItem(event.target.value)}
@@ -38,14 +56,24 @@ function App() {
         {todos.map((todo) => {
           return (
             <li key={todo.id}>
-              <label htmlFor="">
+              <label>
                 <input
                   type="checkbox"
                   checked={todo.completed}
+                  onChange={(event) =>
+                    toggleTodo(todo.id, event.target.checked)
+                  }
                 />
                 {todo.title}
               </label>
-              <button className="btn btn-danger">Delete</button>
+              <button
+                onClick={() => {
+                  deleteTodo(todo.id);
+                }}
+                className="btn btn-danger"
+              >
+                Delete
+              </button>
             </li>
           );
         })}
