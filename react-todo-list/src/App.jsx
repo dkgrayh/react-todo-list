@@ -3,15 +3,23 @@ import './styles.css';
 
 function App() {
   const [newItem, setNewItem] = useState('');
+  const [todos, setTodos] = useState([]);
 
-  const handleChange = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
+
+    setTodos((currentTodos) => {
+      return [
+        ...currentTodos,
+        { id: crypto.randomUUID(), title: newItem, completed: false },
+      ];
+    });
   };
 
   return (
     <>
       <form
-        onSubmit={handleChange}
+        onSubmit={handleSubmit}
         className="new-item-form"
       >
         <div className="form-row">
@@ -26,14 +34,21 @@ function App() {
         <button className="btn">Add</button>
       </form>
       <h1 className="header">Todo List</h1>
-      <ul>
-        <li>
-          <label htmlFor="">
-            <input type="checkbox" />
-            Item 1
-          </label>
-          <button className="btn btn-danger">Delete</button>
-        </li>
+      <ul className="list">
+        {todos.map((todo) => {
+          return (
+            <li key={todo.id}>
+              <label htmlFor="">
+                <input
+                  type="checkbox"
+                  checked={todo.completed}
+                />
+                {todo.title}
+              </label>
+              <button className="btn btn-danger">Delete</button>
+            </li>
+          );
+        })}
       </ul>
     </>
   );
